@@ -2,6 +2,7 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 
+//Initializing pre-req
 dotenv.config();
 
 const PORT = process.env.PORT;
@@ -10,6 +11,7 @@ const app = express();
 
 app.use(express.json());
 
+// Creating DB connection
 const createConnection = async () => {
   const client = new MongoClient(MONGO_URL);
   await client.connect();
@@ -19,6 +21,7 @@ const createConnection = async () => {
 
 const client = await createConnection();
 
+// For inserting data
 const insertData = async (collectionName, data) => {
   return await client
     .db("mentorAssignment")
@@ -26,6 +29,7 @@ const insertData = async (collectionName, data) => {
     .insertOne(data);
 };
 
+// For updating data
 const updateData = async (collectionName, filter, val) => {
   return await client
     .db("mentorAssignment")
@@ -33,6 +37,7 @@ const updateData = async (collectionName, filter, val) => {
     .updateOne(filter, val);
 };
 
+// Api to create student
 app.post("/create-student", async (req, res) => {
   let data = req.body;
   data["mentor"] = null;
@@ -40,6 +45,7 @@ app.post("/create-student", async (req, res) => {
   res.send(response);
 });
 
+// Api to create mentor
 app.post("/create-mentor", async (req, res) => {
   let data = req.body;
   console.log(data);
@@ -48,6 +54,7 @@ app.post("/create-mentor", async (req, res) => {
   res.send(response);
 });
 
+// Api to assign a mentor to student
 app.post("/assign-mentor", async (req, res) => {
   let data = req.body;
   let studentId = data["studentId"];
@@ -85,6 +92,7 @@ app.post("/assign-mentor", async (req, res) => {
   res.send(response);
 });
 
+// Api to change mentor for a student
 app.post("/change-mentor", async (req, res) => {
   let data = req.body;
   let studentId = data["studentId"];
@@ -134,7 +142,8 @@ app.post("/change-mentor", async (req, res) => {
   res.send(response);
 });
 
-app.get("/list-studennts/:id", async (req, res) => {
+// Api to list student with id
+app.get("/list-students/:id", async (req, res) => {
   let { id } = req.params;
 
   let studentData = {};
