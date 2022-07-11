@@ -92,6 +92,7 @@ app.post("/assign-mentor", async (req, res) => {
     else response = "student already present";
   }
   res.send(response);
+  return;
 });
 
 // Api to change mentor for a student
@@ -142,6 +143,7 @@ app.post("/change-mentor", async (req, res) => {
     response = "Student's mentor value is Null";
   }
   res.send(response);
+  return;
 });
 
 // Api to list student with id
@@ -173,6 +175,7 @@ app.get("/list-students/:id", async (req, res) => {
   };
 
   res.send(response);
+  return;
 });
 
 app.get("/", (req, res) => {
