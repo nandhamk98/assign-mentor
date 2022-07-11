@@ -175,6 +175,10 @@ app.get("/list-students/:id", async (req, res) => {
   res.send(response);
 });
 
+app.get("/", (req, res) => {
+  res.status(200).send("Mentor - Assignment app");
+});
+
 app.listen(PORT, () => {
   console.log(`Connected to port: ${PORT}`);
 });
