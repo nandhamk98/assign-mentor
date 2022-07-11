@@ -48,7 +48,6 @@ app.post("/create-student", async (req, res) => {
 // Api to create mentor
 app.post("/create-mentor", async (req, res) => {
   let data = req.body;
-  console.log(data);
   data["students"] = [];
   let response = await insertData("mentor", data);
   res.send(response);
@@ -60,14 +59,18 @@ app.post("/assign-mentor", async (req, res) => {
   let studentId = data["studentId"];
   let mentorId = data["mentorId"];
 
+  // DB call to get student data
   let studentData = await client
     .db("mentorAssignment")
     .collection("student")
     .findOne({ id: studentId });
+
+  // DB call to get mentor data
   let mentorData = await client
     .db("mentorAssignment")
     .collection("mentor")
     .findOne({ id: mentorId });
+
   let mentorStudentData = mentorData.students.filter(
     (data) => data === studentId
   );
@@ -79,7 +82,6 @@ app.post("/assign-mentor", async (req, res) => {
       { $set: { mentor: mentorId } }
     );
     let studentsPresent = mentorData.students;
-    console.log(studentsPresent);
     await updateData(
       "mentor",
       { id: mentorId },
